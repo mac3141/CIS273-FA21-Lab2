@@ -7,11 +7,11 @@ namespace Lab2
     {
         static void Main(string[] args)
         {
+            Console.WriteLine(IsBalanced("{ int a = new int[ ] ( ( ) ) }")); // true
+            Console.WriteLine(IsBalanced("{ [ ] ) ) ( ( }")); // false
+            Console.WriteLine(IsBalanced("int a = 5")); // true
 
-            //IsBalanced("{ int a = new int[ ] ( ( ) ) }");
-
-            Evaluate("5 3 11 + -");
-
+            //Evaluate("5 3 11 + -");
         }
 
 
@@ -20,18 +20,18 @@ namespace Lab2
         {
             Stack<char> stack = new Stack<char>();
 
-            foreach( char c in s)
+            foreach (char c in s)
             {
                 // If opening symbol, then push onto stack
-                if ( c == '{' || c=='<' || c=='[' || c=='(' )
+                if (c == '(' || c=='[' || c=='{' || c=='<')
                 {
                     stack.Push(c);
                 }
 
                 // If closing symbol, then see if it matches the top
-                else if (c == '}' || c == '>' || c == ']' || c == ')')
+                else if (c == ')' || c == ']' || c == '}' || c == '>')
                 {
-                    if( Matches(stack.Peek(), c) )
+                    if (Matches(stack.Peek(), c))
                     {
                         stack.Pop();
                     }
@@ -40,7 +40,6 @@ namespace Lab2
                         return false;
                     }
                 }
-
                 // If any other character, then continue/ignore it.
                 else
                 {
@@ -50,8 +49,7 @@ namespace Lab2
 
             // If stack is empty, return true
             // else return false
-
-            if( stack.Count == 0)
+            if (stack.Count == 0)
             {
                 return true;
             }
@@ -62,8 +60,12 @@ namespace Lab2
         private static bool Matches(char open, char close)
         {
             // do the matching
+            if ((open == '(' && close == ')') || (open == '[' && close == ']') || (open == '{' && close == '}') || (open == '<' && close == '>'))
+            {
+                return true;
+            }
 
-            return true;
+            return false;
         }
 
         // Evaluate("5 3 11 + -")	// returns -9
