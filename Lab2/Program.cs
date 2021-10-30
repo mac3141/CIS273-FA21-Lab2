@@ -7,14 +7,18 @@ namespace Lab2
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(IsBalanced("{ int a = new int[ ] ( ( ) ) }")); // true
-            Console.WriteLine(IsBalanced("{ [ ] ) ) ( ( }")); // false
-            Console.WriteLine(IsBalanced("int a = 5")); // true
-
-            //Evaluate("5 3 11 + -");
+            Console.WriteLine(Evaluate("5 3 11 + -")); // -9
+            Console.WriteLine(Evaluate("5 3 +")); // 8
+            Console.WriteLine(Evaluate("7 5 -")); // 2
+            Console.WriteLine(Evaluate("5 3 1 + -")); // 1
+            Console.WriteLine(Evaluate("15 7 1 1 + - / 3 * 2 1 1 + + -")); // 5
+            Console.WriteLine(Evaluate("1 + + -")); // null
+            Console.WriteLine(Evaluate("1 -")); // null
+            Console.WriteLine(Evaluate("-")); // null
+            Console.WriteLine(Evaluate("")); // null
+            Console.WriteLine(Evaluate("   ")); // null
+            Console.WriteLine(Evaluate("3")); // 3
         }
-
-
 
         public static bool IsBalanced(string s)
         {
@@ -74,23 +78,43 @@ namespace Lab2
         public static double? Evaluate(string s)
         {
             // parse into tokens (strings)
-
             string[] tokens = s.Split();
 
             Stack<double> stack = new Stack<double>();
 
             // foreach token
-                // If token is an integer
-                // Push on stack
+            foreach (string token in tokens)
+            {
+                // If token is a number, push on stack
+                if (token != "+" && token != "-" && token != "*" && token != "/" && token != "")
+                {
+                    stack.Push(double.Parse(token)); // convert from string to double
+                }
 
                 // If token is an operator
-                    // Pop twice and save both values
+                if (token == "+" || token == "-" || token == "*" || token == "/")
+                {
+                    // Pop twice and save both values -- reverse order because order matters
+                    if (stack.Count > 1)
+                    {
+                        double n2 = stack.Pop();
+                        double n1 = stack.Pop();
+
+                        // Perform operation on 2 values (in the correct order)
+                        double result = DoMath(n1, n2, token);
+
+                        // Push the result on to stack
+                        stack.Push(result);
+                    }
                     // (if you can't pop twice, then return null)
-                    // Perform operation on 2 values (in the correct order)
-                    // Push the result on to stack
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
 
-
-            if( stack.Count != 1)
+            if (stack.Count != 1)
             {
                 return null;
             }
@@ -98,7 +122,16 @@ namespace Lab2
             return stack.Pop();
         }
 
-
-
+        private static double DoMath(double n1, double n2, string operation)
+        {
+            return operation switch
+            {
+                "+" => n1 + n2,
+                "-" => n1 - n2,
+                "*" => n1 * n2,
+                "/" => n1 / n2,
+                _ => 0,
+            };
+        }
     }
 }
