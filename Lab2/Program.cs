@@ -7,17 +7,7 @@ namespace Lab2
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Evaluate("5 3 11 + -")); // -9
-            Console.WriteLine(Evaluate("5 3 +")); // 8
-            Console.WriteLine(Evaluate("7 5 -")); // 2
-            Console.WriteLine(Evaluate("5 3 1 + -")); // 1
-            Console.WriteLine(Evaluate("15 7 1 1 + - / 3 * 2 1 1 + + -")); // 5
-            Console.WriteLine(Evaluate("1 + + -")); // null
-            Console.WriteLine(Evaluate("1 -")); // null
-            Console.WriteLine(Evaluate("-")); // null
-            Console.WriteLine(Evaluate("")); // null
-            Console.WriteLine(Evaluate("   ")); // null
-            Console.WriteLine(Evaluate("3")); // 3
+            Console.WriteLine(IsBalanced("]"));
         }
 
         public static bool IsBalanced(string s)
@@ -35,9 +25,12 @@ namespace Lab2
                 // If closing symbol, then see if it matches the top
                 else if (c == ')' || c == ']' || c == '}' || c == '>')
                 {
-                    if (Matches(stack.Peek(), c))
+                    if (stack.Count != 0)
                     {
-                        stack.Pop();
+                        if (Matches(stack.Peek(), c))
+                        {
+                            stack.Pop();
+                        }
                     }
                     else
                     {
@@ -71,9 +64,6 @@ namespace Lab2
 
             return false;
         }
-
-        // Evaluate("5 3 11 + -")	// returns -9
-        // 2.4 3.8 / 2.321 +
         
         public static double? Evaluate(string s)
         {
